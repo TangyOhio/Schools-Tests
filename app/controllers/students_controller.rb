@@ -25,7 +25,7 @@ class StudentsController < ApplicationController
     @student = @school.student.new(student_params)
     
     if @student.save
-      redirect_to [@school, @student], notice: 'School is created'
+      redirect_to @student, notice: 'Student is created'
     else
       render :new
     end
@@ -34,7 +34,7 @@ class StudentsController < ApplicationController
   # PUT/PATCH /schools/1/students/1
   def update
     if @student.update(student_params)
-      redirect_to [@school, @student], notice: 'School is updated'
+      redirect_to @student, notice: 'Student is updated'
     else
       render :edit
     end
