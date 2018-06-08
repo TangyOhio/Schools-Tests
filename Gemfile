@@ -40,6 +40,7 @@ group :development, :test do
   # REMEMBER: to add the coverage/ folder to your .gitignore - also wouldn't be a bad idea to add the .DS_Store file as well
   gem 'simplecov'
   gem 'factory_bot_rails'
+  gem 'annotate'
 end
 
 group :development do
