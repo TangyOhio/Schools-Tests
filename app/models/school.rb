@@ -14,6 +14,10 @@
 
 class School < ApplicationRecord
   # Validations
+  validates :name, presence: true, uniqueness: true
+  validates :capacity, presence: true, numericality: true
+  validates_presence_of :address, :principal, :private_school
   
   # Associations
+  has_many :students, dependent: :destroy
 end

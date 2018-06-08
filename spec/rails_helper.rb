@@ -38,6 +38,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
+  config.include FactoryBot::Syntax::Methods
+
   # Database Cleaner Configuration
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

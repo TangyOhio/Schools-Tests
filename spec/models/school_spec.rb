@@ -23,7 +23,7 @@ RSpec.describe School, type: :model do
       expect(school.name).to eq(name)
     end
 
-    it 'has a address' do
+    it 'has an address' do
       address = '123 Street BLVD'
       school = School.create(address: address)
       expect(school.address).to eq(address)
