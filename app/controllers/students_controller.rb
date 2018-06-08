@@ -43,7 +43,7 @@ class StudentsController < ApplicationController
   # DELETE /schools/1/students/1
   def destroy
     @student.destroy
-    redirect_to school_students_path(@school), notice: 'School is deleted'
+    redirect_to school_students_path(@school), notice: 'Student is deleted, lul'
   end
 
   private

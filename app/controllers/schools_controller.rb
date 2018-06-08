@@ -19,30 +19,31 @@ class SchoolsController < ApplicationController
   def edit
   end
 
-  # PATCH /schools/1
-  def update
-    if @school.update(school_params)
-      redirect_to @school
-    else
-      render :edit
-    end
-  end
-
   # POST /schools
   def create
     @school = School.new(school_params)
 
     if @school.save
-      redirect_to @school
+      redirect_to @school, notice: 'Created School'
     else
       render :new
     end
   end
 
+  # PATCH /schools/1
+  def update
+    if @school.update(school_params)
+      redirect_to @school, notice: 'Updated School'
+    else
+      render :edit
+    end
+  end
+
+
   # DELETE /schools
   def destroy
     @school.delete
-    redirect_to schools_path
+    redirect_to schools_path, notice 'Yeeted School'
   end
 
   private
