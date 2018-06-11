@@ -3,7 +3,14 @@ require 'rails_helper'
 RSpec.describe StudentsController, type: :controller do
 
   let(:student) { FactoryBot.create(:student)}
-  let(:bad_student) {FactoryBot.create(:student, name: '')}
+  let(:invalid_attributes) {
+    { 
+      name: '', 
+      student_number: 123, 
+      gpa: 3.14,
+      school_id: 1
+    }
+  }
 
   describe "GET #index" do
     it "returns http success" do
@@ -50,12 +57,12 @@ RSpec.describe StudentsController, type: :controller do
      context "with invalid params" do
       it "does not creates a new student" do
         expect {
-          post :create, params: { student: bad_student, school_id: student.school_id }
+          post :create, params: { student: invalid_attributes, school_id: student.school_id }
         }.to change(Student, :count).by(0)
       end
 
       it "redirects to new template" do
-        post :create, params: { student: bad_student, school_id: student.school_id }
+        post :create, params: { student: invalid_attributes, school_id: student.school_id }
         expect(response).to be_successful
       end
     end
@@ -74,20 +81,20 @@ RSpec.describe StudentsController, type: :controller do
       end
 
       it "redirect to the student updated" do
-        put :update, params: {id: student.id }
-        expect(response).to redirect_to(student)
+        put :update, params: {id: student.id, student: new_attributes, school_id: student.school_id }
+        expect(response).to redirect_to(school_student_path)
       end
     end
 
     context "with invalid params" do
       it "does not update the student" do
-        put :update, params: {id: student.id, student: bad_student, school_id: student.school_id }
+        put :update, params: {id: student.id, student: invalid_attributes, school_id: student.school_id }
         student.reload
-        expect(student.name).to_not eq(bad_student[:name])
+        expect(student.name).to_not eq(invalid_attributes[:name])
       end
 
       it "redirect to the edit form" do
-        put :update, params: {id: student.id, student: bad_student }
+        put :update, params: {id: student.id, student: invalid_attributes, school_id: student.school_id }
         expect(response).to be_successful
       end
     end
@@ -102,7 +109,7 @@ RSpec.describe StudentsController, type: :controller do
 
     it "redirects to the student list" do
       delete :destroy, params: {id: student.id, school_id: student.school_id}
-      expect(response).to redirect_to(schools_url)
+      expect(response).to redirect_to(school_students_url)
     end
   end
 
