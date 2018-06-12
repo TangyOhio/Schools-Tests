@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe StudentsController, type: :controller do
 
   let(:student) { FactoryBot.create(:student)}
+  let(:school) { FactoryBot.create(:school)}
   let(:invalid_attributes) {
     { 
       name: '', 
@@ -43,21 +44,22 @@ RSpec.describe StudentsController, type: :controller do
   describe "POST #create" do
     context "with valid params" do
       it "creates a new student" do
+      
         expect {
-          post :create, params: { student: student, school_id: student.school_id }
+          post :create, params: { school_id: school.id, student: {  name: 'test', student_number: 1234, gpa: 3.3  } }
         }.to change(Student, :count).by(1)
       end
 
       it "redirects to the created student" do
-        post :create, params: { student: student, school_id: student.school_id }
-        expect(response).to redirect_to(Student.last)
+        post :create, params: { school_id: school.id, student: {  name: 'test', student_number: 1234, gpa: 3.3  }  }
+        expect(response).to redirect_to(school_student_path)
       end
     end
 
      context "with invalid params" do
       it "does not creates a new student" do
         expect {
-          post :create, params: { student: invalid_attributes, school_id: student.school_id }
+          post :create, params: { student: invalid_attributes, school_id: school.id }
         }.to change(Student, :count).by(0)
       end
 
@@ -102,9 +104,8 @@ RSpec.describe StudentsController, type: :controller do
 
    describe "DELETE #destroy" do
     it "destroys the requested student" do
-      expect {
-        delete :destroy, params: {id: student.id, school_id: student.school_id}
-      }.to change(Student, :count).by(-1)
+      delete :destroy, params: {id: student.id, school_id: student.school_id}
+      expect(Student.count).to eq(0)
     end
 
     it "redirects to the student list" do
